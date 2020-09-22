@@ -19,20 +19,20 @@ client.on('message', async message => {
         message.react('👍')
         message.react('👎');
 
-// Change first line to match reaction users instead of message.author, and add in desired action after each outcome
-message.awaitReactions((reaction, user) => user.id == message.author.id && (reaction.emoji.name == '👍' || reaction.emoji.name == '👎'),
+message.awaitReactions((reaction, user) => user.id == reaction.users.id && (reaction.emoji.name == '👍' || reaction.emoji.name == '👎'),
         { max: 8, time: 30000 }).then(collected => {
             let a = collected.emoji.name == '👍';
             let b = collected.first().emoji.name == '👎';
                 if (a.size > b.size) {
-                        message.channel.send('More upvotes');
+                        message.channel.send('Vote Successful');
+                        guild.member(target).setVoiceChannel(755956322989768828);
                 } else if(a.size < b.size) {
-                    message.channel.send('More downvoted')
+                    message.channel.send('Vote Failed')
                 }
                 else
                         message.channel.send('Votes were equal');
         }).catch((e) => {
-                message.channel.send(`there was an error! ${e}`);
+                message.channel.send(`There was an error! ${e}`);
         });
     }
 });
